@@ -3,14 +3,14 @@ Repository for the solution to the module's question :coffee:
 
 **Question 1**
 
-1a)Collects information from application logs contained in the syslog.log file. The information required includes: log type (ERROR / INFO), log messages, and the username on each log line. Since Ryujin finds it difficult to check one line at a time manually, he uses regex to make his job easier. Help Ryujin create the regex.
+1a) Collects information from application logs contained in the syslog.log file. The information required includes: log type (ERROR / INFO), log messages, and the username on each log line. Since Ryujin finds it difficult to check one line at a time manually, he uses regex to make his job easier. Help Ryujin create the regex.
 
 Code :
 cat syslog.log|cut -d ":" -f4
 
 So in question number 1a we are asked to display INFO / ERROR, display log massages, and display username on each log line.Our first step is to create cat. The function of this cat is to show all the information that we want to display.Syslog.log This is to print all the information / files that already exist.Then we use cut to take the info / information and cut it. Cut it from: first to: third. That's why we use -f4. So that later only INFO / ERROR, log massages and age will appear or display.
 
-1b)Then, Ryujin must display all error messages that appear along with the number of occurrences.
+1b) Then, Ryujin must display all error messages that appear along with the number of occurrences.
 
 Code :
 cat syslog.log|cut -d ":" -f4|cut -d "(" -f1|grep ERROR|sort|uniq -c
