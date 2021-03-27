@@ -1,7 +1,8 @@
-# Pembahasan Soal Shift Sisop Modul 1 oleh grup I05
+# Solution of Soal Shift Sisop Modul 1 by Group I05
 Repository for the solution to the module's question :coffee:
 
-**Soal 1**
+**Question 1**
+
 1a)Collects information from application logs contained in the syslog.log file. The information required includes: log type (ERROR / INFO), log messages, and the username on each log line. Since Ryujin finds it difficult to check one line at a time manually, he uses regex to make his job easier. Help Ryujin create the regex.
 
 Code :
