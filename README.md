@@ -23,7 +23,7 @@ So in question number 1b we are asked to display all error messages that appear 
 
 2a) Steven wants to appreciate the performance of his employees so far by knowing Row ID and the largest profit percentage (if the largest profit percentage is more than 1, take the largest Row ID). To make your work easier, Clemong provides the definition of profit percentage, i.e.:
 
-Profit Percentage = (Profit Cost Price) 100
+Profit Percentage = (Profit - Cost Price) 100
 
 Cost Price is obtained from the reduction of Sales with Profit. (Quantity ignored).
 
