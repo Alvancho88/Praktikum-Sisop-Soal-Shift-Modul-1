@@ -1,4 +1,4 @@
-# Solution of Soal Shift Sisop Modul 1 by Group I05
+# Solution of "Soal Shift Sisop Modul 1" - Group I05
 Repository for the solution to the module's question :coffee:
 
 **Question 1**
