@@ -1,4 +1,4 @@
-# Praktikum-Sisop-Soal-Shift-Modul-1
+# Pembahasan Soal Shift Sisop Modul 1 oleh grup I05
 Repository for the solution to the module's question :coffee:
 
 **Soal 1**
