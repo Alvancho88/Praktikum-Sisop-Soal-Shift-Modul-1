@@ -3,7 +3,7 @@ Repository for the solution to the module's question :coffee:
 
 # Question 1
 
-**a)** Collects information from application logs contained in the syslog.log file. The information required includes: log type (ERROR / INFO), log messages, and the username on each log line. Since Ryujin finds it difficult to check one line at a time manually, he uses regex to make his job easier. Help Ryujin create the regex.
+**a) Collects information from application logs contained in the syslog.log file. The information required includes: log type (ERROR / INFO), log messages, and the username on each log line. Since Ryujin finds it difficult to check one line at a time manually, he uses regex to make his job easier. Help Ryujin create the regex.**
 
 **Code :**
 ```
@@ -11,7 +11,7 @@ cat syslog.log|cut -d ":" -f4
 ```
 So in question number 1a we are asked to display INFO / ERROR, display log massages, and display username on each log line.Our first step is to create cat. The function of this cat is to show all the information that we want to display.Syslog.log This is to print all the information / files that already exist.Then we use cut to take the info / information and cut it. Cut it from: first to: third. That's why we use -f4. So that later only INFO / ERROR, log massages and age will appear or display.
 
-**b)** Then, Ryujin must display all error messages that appear along with the number of occurrences.
+**b) Then, Ryujin must display all error messages that appear along with the number of occurrences.**
 
 **Code :**
 ```
@@ -21,11 +21,12 @@ So in question number 1b we are asked to display all error messages that appear 
 
 # Question 2
 
-**a)** Steven wants to appreciate the performance of his employees so far by knowing Row ID and the largest profit percentage (if the largest profit percentage is more than 1, take the largest Row ID). To make your work easier, Clemong provides the definition of profit percentage, i.e.:
-
+**a) Steven wants to appreciate the performance of his employees so far by knowing Row ID and the largest profit percentage (if the largest profit percentage is more than 1, take the largest Row ID). To make your work easier, Clemong provides the definition of profit percentage, i.e.:**
+```
 Profit Percentage = (Profit - Cost Price) 100
 
 Cost Price is obtained from the reduction of Sales with Profit. (Quantity ignored).
+```
 
 **Code:**
 ```
@@ -44,7 +45,7 @@ END {
 ```
 First of all we need to create the awk program. Awk is a scripting language used for manipulating data and generating reports.The awk command programming language requires no compiling, and allows the user to use variables, numeric functions, string functions, and logical operators. Then we write the -F "\t" to tell the program that the data that we used is separated by the column (tab). Next, we initialized the profit_percetage to 0 to let the if statement below can be executed. We jump in to the if statement. In this statement we put the formula that have been given before from the question. $21 means the profit column. $18 means the sales column. It is same as the formula to calculate the profit percentage from the data. We keep doing it until the largest profit percentage is more than 1, then we take the largest row. Afte that, We tell the program that we process the data or we get the data from the Laporan-TokoSisop.tsv and we put the result in the hasil.txt by wrinting their directory and using the ">" to transfer the result.
 
-**b)** A list of customer names on the 2017 transaction in Albuquerque.
+**b) A list of customer names on the 2017 transaction in Albuquerque.**
 
 **Code:**
 ```
@@ -65,7 +66,7 @@ END {
 ```
 Before the awk begin, we need to declare $2~/2017/ && $10~/Albuquerque/ {row[$7]++}. $2~/2017/ means the order id column in 2017 and $10~/Albuquerque means the city in Albuquerque. {row[$7]++} means we check the customer name column. Next, we check the customer_name in row. Then we print the customer names on the 2017 transaction in Albuquerque. Same as before. Now we tell the computer that we overwrite the file before. We get the data from Laporan-TokoShisSop.tsv and process it then the result will in the hasil.txt. Also write those directory. The difference between the first one is the ">" and the ">". ">" is for the initial one. ">>" is for the overwrite the old file and update it.
 
-**c)** A customer segment and the number of transactions with the least amount of transactions.
+**c) A customer segment and the number of transactions with the least amount of transactions.**
 
 **Code:**
 ```
@@ -92,7 +93,7 @@ END {
 ```
 The awk started by processing and checking the data from the segment column just like we declared it before. Then, we initialize the transactions into a big value to runs the if statement in order to get the lowest transactions. We just simplify declare transaction = 999999. Because from the data we know that the max transaction is only 9994. Then we check the cust_seg in the segment column. If the transaction is more than the seg[cust_reg], we pass the cust_seg value into segment and also the seg[cust_seg] value into transactions. Also, we overwrite and update the file to the hasil.txt
 
-**d)** Region that has the least total profit and the total profit of that region.
+**d) Region that has the least total profit and the total profit of that region.**
 
 **Code:**
 ```
@@ -123,7 +124,7 @@ END {
 ```
 We initialized the NR>1 to proceed the data. NR means the number of records which is the awk built-in variable. Then we add the region_profit which contains the value of region column and add it with the value of profit column. Again we just simplify declare the total_profit as 99999. As we know from the data that the profit is not more than the 99999. As long as the total profit is more than the region_profit[reg], we input the value from region_profit[reg] into the total_profit and reg value into region. The last thing we overwrite the hasil.txt that we already made before and update it again.
 
-**e)** Create a script that will produce a file “Hasil.txt” 
+**e) Create a script that will produce a file “Hasil.txt” **
 
 **Code:**
 ```
