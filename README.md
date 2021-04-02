@@ -1,4 +1,11 @@
 # Solution of "Soal Shift Sisop Modul 1" - Group I05
+
+**Rafi Akbar Rafsanjani - 05111942000004**
+
+**Agustinus Aldi Irawan Rahardja - 05111942000010**
+
+**Muhammad Rafi Hayla Arifa - 05111942000014**
+
 Repository for the solution to the module's question :coffee:
 
 # Question 1
