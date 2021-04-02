@@ -5,7 +5,7 @@ Repository for the solution to the module's question :coffee:
 
 **a) Collects information from application logs contained in the syslog.log file. The information required includes: log type (ERROR / INFO), log messages, and the username on each log line. Since Ryujin finds it difficult to check one line at a time manually, he uses regex to make his job easier. Help Ryujin create the regex.**
 
-**Code :**
+**Source Code**
 ```
 cat syslog.log|cut -d ":" -f4
 ```
@@ -13,7 +13,7 @@ So in question number 1a we are asked to display INFO / ERROR, display log massa
 
 **b) Then, Ryujin must display all error messages that appear along with the number of occurrences.**
 
-**Code :**
+**Source Code**
 ```
 cat syslog.log|cut -d ":" -f4|cut -d "(" -f1|grep ERROR|sort|uniq -c
 ```
@@ -28,7 +28,7 @@ Profit Percentage = (Profit - Cost Price) 100
 Cost Price is obtained from the reduction of Sales with Profit. (Quantity ignored).
 ```
 
-**Code:**
+**Source Code**
 ```
 awk -F "\t" '
 BEGIN {{profit_percentage = 0}} 
@@ -44,11 +44,18 @@ END {
 }
 ' /home/rafihayla/Downloads/Laporan-TokoShiSop.tsv > /home/rafihayla/Downloads/soal-shift-sisop-modul-1-I05-2021/soal2/hasil.txt
 ```
+**Explanation**
+
 First of all we need to create the awk program. Awk is a scripting language used for manipulating data and generating reports.The awk command programming language requires no compiling, and allows the user to use variables, numeric functions, string functions, and logical operators. Then we write the ```-F "\t"``` to tell the program that the data that we used is separated by the column (tab). Next, we initialized the ```profit_percetage``` to 0 to let the if statement below can be executed. We jump in to the if statement. In this statement we put the formula that have been given before from the question. ```$21``` means the profit column. ```$18``` means the sales column. It is same as the formula to calculate the profit percentage from the data. We compare it to the ```profit_percentage``` which is 0 before. After that we compare it again the calculation of the data by using the formula with the new ```profit_percentage``` which we get by applying the formula again. And compare it again the new calculation of ```profit_percentage``` with the previous one. After that, We tell the program that we process the data or we get the data from the ```Laporan-TokoSisop.tsv``` and we put the result in the ```hasil.txt``` by wrinting their directory and using the ```">"``` to transfer the result.
+
+**Documentation**
+
+<img width="677" alt="Screen Shot 2021-04-02 at 22 07 34" src="https://user-images.githubusercontent.com/74056954/113427839-f3bb1600-93ff-11eb-96bf-c2c9c2509585.png">
+
 
 **b) A list of customer names on the 2017 transaction in Albuquerque.**
 
-**Code:**
+**Source Code**
 ```
 awk -F "\t" '
 $2~/2017/ && $10~/Albuquerque/ {row[$7]++}
@@ -64,11 +71,18 @@ END {
 }
 ' /home/rafihayla/Downloads/Laporan-TokoShiSop.tsv >> /home/rafihayla/Downloads/soal-shift-sisop-modul-1-I05-2021/soal2/hasil.txt
 ```
+**Explanation**
+
 Before the awk begin, we need to declare ```$2~/2017/ && $10~/Albuquerque/ {row[$7]++}```. ```$2~/2017/``` means the order id column in 2017 and ```$10~/Albuquerque``` means the city in Albuquerque. ```{row[$7]++}``` means we check the customer name column one by one. Next, we check the ```customer_name``` in row. Then we print the customer names on the 2017 transaction in Albuquerque. Same as before. Now we tell the computer that we update the file ```hasil.txt```before. We get the data from ```Laporan-TokoShisSop.tsv``` and process it then the result will in the ```hasil.txt```. Also write those directory. The difference between the first one is the ```">"``` and the ```">>"```. ```">"``` is for the initial one. ```">>"``` is to update it without deleting the old one.
+
+**Documentation**
+
+<img width="681" alt="Screen Shot 2021-04-02 at 22 09 05" src="https://user-images.githubusercontent.com/74056954/113427891-0d5c5d80-9400-11eb-96d2-d932cb2f0ef7.png">
+
 
 **c) A customer segment and the number of transactions with the least amount of transactions.**
 
-**Code:**
+**Source Code**
 ```
 awk -F "\t" '
 $8~/Home Office/ || $8~/Consumer/ || $8~/Corporate/ {seg[$8]++}
@@ -91,11 +105,17 @@ END {
 }
 ' /home/rafihayla/Downloads/Laporan-TokoShiSop.tsv >> /home/rafihayla/Downloads/soal-shift-sisop-modul-1-I05-2021/soal2/hasil.txt 
 ```
+**Explanation**
+
 The awk started by processing and checking the data from the ```segment``` column just like we declared it before either home office, consumer, or corporate. Then, we initialize the ```transactions``` into a big value to runs the if statement in order to get the lowest transactions. We just simplify declare ```transaction = 999999```. Because from the data we know that the max transaction is only 9994. Then we check the cust_seg in the segment column. If the transaction is more than the ```seg[cust_reg]```, we pass the ```cust_seg``` value into ```segment``` and also the ```seg[cust_seg]``` value into ```transactions```. Also, we update the file to the ```hasil.txt``` without deleting the previous one.
+
+**Documentation**
+
+<img width="682" alt="Screen Shot 2021-04-02 at 22 09 52" src="https://user-images.githubusercontent.com/74056954/113427959-282ed200-9400-11eb-8b1f-0a04d6106edb.png">
 
 **d) Region that has the least total profit and the total profit of that region.**
 
-**Code:**
+**Source Code**
 ```
 awk -F "\t" '
 {
@@ -122,14 +142,23 @@ END {
 }
 ' /home/rafihayla/Downloads/Laporan-TokoShiSop.tsv >> /home/rafihayla/Downloads/soal-shift-sisop-modul-1-I05-2021/soal2/hasil.txt 
 ```
+**Explanation**
+
 We initialized the ```NR>1``` to proceed the data. ```NR``` means the number of records which is the awk built-in variable. ```NR>1``` is to avoid the program to read the header of the table. Then we add the ```region_profit``` which contains the value of region column and add it with the value of profit column. Again we just simplify declare the ```total_profit as 99999```. As we know from the data that the profit is not more than the 99999. As long as the ```total profit``` is more than the ```region_profit[reg]```, we input the value from ```region_profit[reg]``` into the ```total_profit``` and ```reg``` value into ```region```. The last thing we update the ```hasil.txt``` that we already made before and update it again.
+
+**Documentation**
+
+<img width="566" alt="Screen Shot 2021-04-02 at 22 11 59" src="https://user-images.githubusercontent.com/74056954/113428139-72b04e80-9400-11eb-9b50-064c6e364627.png">
+
 
 **e) Create a script that will produce a file named Hasil.txt.**
 
-**Code:**
+**Source Code**
 ```
 nano hasil.txt
 ```
+**Explanation**
+
 Before we started. We make the ```hasil.txt``` first by ```nano hasil.txt```. After that we make another by doing ```nano soal2_generate_laporan_ihir_shisop.sh```. Then we do the code overthere and to showing the result to ```hasil.txt```. We write their directory just like did before. ```/home/rafihayla/Downloads/Laporan-TokoShiSop.tsv >> /home/rafihayla/Downloads/soal-shift-sisop-modul-1-I05-2021/soal2/hasil.txt```. Just to remember, ```"<"``` for the initial one and ```"<<"``` for update it.
 
 # Question 3
