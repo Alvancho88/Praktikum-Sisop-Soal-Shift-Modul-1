@@ -124,7 +124,7 @@ END {
 ```
 We initialized the NR>1 to proceed the data. NR means the number of records which is the awk built-in variable. Then we add the region_profit which contains the value of region column and add it with the value of profit column. Again we just simplify declare the total_profit as 99999. As we know from the data that the profit is not more than the 99999. As long as the total profit is more than the region_profit[reg], we input the value from region_profit[reg] into the total_profit and reg value into region. The last thing we overwrite the hasil.txt that we already made before and update it again.
 
-**e) Create a script that will produce a file “Hasil.txt” **
+**e) Create a script that will produce a file “Hasil.txt”. **
 
 **Code:**
 ```
