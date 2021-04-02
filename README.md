@@ -31,8 +31,9 @@ Cost Price is obtained from the reduction of Sales with Profit. (Quantity ignore
 **Code:**
 ```
 awk -F "\t" '
-BEGIN {profit_percentage = 0} {
-	if((($21 / ($18 - $21)) * 100) > profit_percentage)
+BEGIN {{profit_percentage = 0}} 
+{
+	if((($21 / ($18 - $21)) * 100) >= profit_percentage)
 	{
 		profit_percentage = (($21 / ($18 - $21) ) * 100);
 		transaction_id = $1
@@ -41,9 +42,9 @@ BEGIN {profit_percentage = 0} {
 END {
 	printf ("The last transaction with the largest %d with a percentage of %.2f%%.\n\n", transaction_id, profit_percentage)
 }
-' /home/rafihayla/Downloads/Laporan-TokoShiSop.tsv > /home/rafihayla/Documents/soal-shift-sisop-modul-1-I05-2021/soal2/hasil.txt
+' /home/rafihayla/Downloads/Laporan-TokoShiSop.tsv > /home/rafihayla/Downloads/soal-shift-sisop-modul-1-I05-2021/soal2/hasil.txt
 ```
-First of all we need to create the awk program. Awk is a scripting language used for manipulating data and generating reports.The awk command programming language requires no compiling, and allows the user to use variables, numeric functions, string functions, and logical operators. Then we write the ```-F "\t"``` to tell the program that the data that we used is separated by the column (tab). Next, we initialized the profit_percetage to 0 to let the if statement below can be executed. We jump in to the if statement. In this statement we put the formula that have been given before from the question. ```$21``` means the profit column. ```$18``` means the sales column. It is same as the formula to calculate the profit percentage from the data. We keep doing it until the largest profit percentage is more than 1, then we take the largest row. After that, We tell the program that we process the data or we get the data from the ```Laporan-TokoSisop.tsv``` and we put the result in the ```hasil.txt``` by wrinting their directory and using the ```">"``` to transfer the result.
+First of all we need to create the awk program. Awk is a scripting language used for manipulating data and generating reports.The awk command programming language requires no compiling, and allows the user to use variables, numeric functions, string functions, and logical operators. Then we write the ```-F "\t"``` to tell the program that the data that we used is separated by the column (tab). Next, we initialized the ```profit_percetage``` to 0 to let the if statement below can be executed. We jump in to the if statement. In this statement we put the formula that have been given before from the question. ```$21``` means the profit column. ```$18``` means the sales column. It is same as the formula to calculate the profit percentage from the data. We compare it to the ```profit_percentage``` which is 0 before. After that we compare it again the calculation of the data by using the formula with the new ```profit_percentage``` which we get by applying the formula again. And compare it again the new calculation of ```profit_percentage``` with the previous one. After that, We tell the program that we process the data or we get the data from the ```Laporan-TokoSisop.tsv``` and we put the result in the ```hasil.txt``` by wrinting their directory and using the ```">"``` to transfer the result.
 
 **b) A list of customer names on the 2017 transaction in Albuquerque.**
 
@@ -51,10 +52,9 @@ First of all we need to create the awk program. Awk is a scripting language used
 ```
 awk -F "\t" '
 $2~/2017/ && $10~/Albuquerque/ {row[$7]++}
-BEGIN {
-	printf("The list of customer name in Albuquerque in 2017 includes:\n")
-}
+	
 END {
+	printf("The list of customer name in Albuquerque in 2017 includes:\n")
         for(customer_name in row)
         {
                 printf("%s\n", customer_name)
@@ -62,9 +62,9 @@ END {
 
         printf("\n")
 }
-' /home/rafihayla/Downloads/Laporan-TokoShiSop.tsv >> /home/rafihayla/Documents/soal-shift-sisop-modul-1-I05-2021/soal2/hasil.txt
+' /home/rafihayla/Downloads/Laporan-TokoShiSop.tsv >> /home/rafihayla/Downloads/soal-shift-sisop-modul-1-I05-2021/soal2/hasil.txt
 ```
-Before the awk begin, we need to declare ```$2~/2017/ && $10~/Albuquerque/ {row[$7]++}```. ```$2~/2017/``` means the order id column in 2017 and ```$10~/Albuquerque``` means the city in Albuquerque. ```{row[$7]++}``` means we check the customer name column. Next, we check the ```customer_name``` in row. Then we print the customer names on the 2017 transaction in Albuquerque. Same as before. Now we tell the computer that we overwrite the file before. We get the data from Laporan-TokoShisSop.tsv and process it then the result will in the ```hasil.txt```. Also write those directory. The difference between the first one is the ```">"``` and the ```">>"```. ```">"``` is for the initial one. ```">>"``` is to update it without deleting the old one.
+Before the awk begin, we need to declare ```$2~/2017/ && $10~/Albuquerque/ {row[$7]++}```. ```$2~/2017/``` means the order id column in 2017 and ```$10~/Albuquerque``` means the city in Albuquerque. ```{row[$7]++}``` means we check the customer name column one by one. Next, we check the ```customer_name``` in row. Then we print the customer names on the 2017 transaction in Albuquerque. Same as before. Now we tell the computer that we update the file ```hasil.txt```before. We get the data from Laporan-TokoShisSop.tsv and process it then the result will in the ```hasil.txt```. Also write those directory. The difference between the first one is the ```">"``` and the ```">>"```. ```">"``` is for the initial one. ```">>"``` is to update it without deleting the old one.
 
 **c) A customer segment and the number of transactions with the least amount of transactions.**
 
@@ -89,9 +89,9 @@ END {
 
 	printf("The type of customer segment with the least sales is %s with %d transaction.\n\n",segment,transactions)
 }
-' /home/rafihayla/Downloads/Laporan-TokoShiSop.tsv >> /home/rafihayla/Documents/soal-shift-sisop-modul-1-I05-2021/soal2/hasil.txt 
+' /home/rafihayla/Downloads/Laporan-TokoShiSop.tsv >> /home/rafihayla/Downloads/soal-shift-sisop-modul-1-I05-2021/soal2/hasil.txt 
 ```
-The awk started by processing and checking the data from the ```segment``` column just like we declared it before. Then, we initialize the ```transactions``` into a big value to runs the if statement in order to get the lowest transactions. We just simplify declare ```transaction = 999999```. Because from the data we know that the max transaction is only 9994. Then we check the cust_seg in the segment column. If the transaction is more than the ```seg[cust_reg]```, we pass the ```cust_seg``` value into ```segment``` and also the ```seg[cust_seg]``` value into ```transactions```. Also, we update the file to the ```hasil.txt``` without deleting the previous one.
+The awk started by processing and checking the data from the ```segment``` column just like we declared it before either home office, consumer, or corporate. Then, we initialize the ```transactions``` into a big value to runs the if statement in order to get the lowest transactions. We just simplify declare ```transaction = 999999```. Because from the data we know that the max transaction is only 9994. Then we check the cust_seg in the segment column. If the transaction is more than the ```seg[cust_reg]```, we pass the ```cust_seg``` value into ```segment``` and also the ```seg[cust_seg]``` value into ```transactions```. Also, we update the file to the ```hasil.txt``` without deleting the previous one.
 
 **d) Region that has the least total profit and the total profit of that region.**
 
@@ -120,9 +120,9 @@ END {
 
 	printf("The region which has the least total profit is %s with total profit %d\n",region,total_profit)
 }
-' /home/rafihayla/Downloads/Laporan-TokoShiSop.tsv >> /home/rafihayla/Documents/soal-shift-sisop-modul-1-I05-2021/soal2/hasil.txt 
+' /home/rafihayla/Downloads/Laporan-TokoShiSop.tsv >> /home/rafihayla/Downloads/soal-shift-sisop-modul-1-I05-2021/soal2/hasil.txt 
 ```
-We initialized the ```NR>1``` to proceed the data. ```NR``` means the number of records which is the awk built-in variable. Then we add the ```region_profit``` which contains the value of region column and add it with the value of profit column. Again we just simplify declare the ```total_profit as 99999```. As we know from the data that the profit is not more than the 99999. As long as the ```total profit``` is more than the ```region_profit[reg]```, we input the value from ```region_profit[reg]``` into the ```total_profit``` and ```reg``` value into ```region```. The last thing we update the hasil.txt that we already made before and update it again.
+We initialized the ```NR>1``` to proceed the data. ```NR``` means the number of records which is the awk built-in variable. ```NR>1``` is to avoid the program to read the header of the table. Then we add the ```region_profit``` which contains the value of region column and add it with the value of profit column. Again we just simplify declare the ```total_profit as 99999```. As we know from the data that the profit is not more than the 99999. As long as the ```total profit``` is more than the ```region_profit[reg]```, we input the value from ```region_profit[reg]``` into the ```total_profit``` and ```reg``` value into ```region```. The last thing we update the hasil.txt that we already made before and update it again.
 
 **e) Create a script that will produce a file named Hasil.txt.**
 
@@ -130,16 +130,17 @@ We initialized the ```NR>1``` to proceed the data. ```NR``` means the number of 
 ```
 nano hasil.txt
 ```
-Before we started. We make the ```hasil.txt``` first by ```nano hasil.txt```. After that we make another by doing ```nano soal2_generate_laporan_ihir_shisop.sh```. Then we do the code overthere and to showing the result to ```hasil.txt```. We write their directory just like did before. ```/home/rafihayla/Downloads/Laporan-TokoShiSop.tsv >> /home/rafihayla/Documents/soal-shift-sisop-modul-1-I05-2021/soal2/hasil.txt```. Just to remember, ```"<"``` for the initial one and ```"<<"``` for update it.
+Before we started. We make the ```hasil.txt``` first by ```nano hasil.txt```. After that we make another by doing ```nano soal2_generate_laporan_ihir_shisop.sh```. Then we do the code overthere and to showing the result to ```hasil.txt```. We write their directory just like did before. ```/home/rafihayla/Downloads/Laporan-TokoShiSop.tsv >> /home/rafihayla/Downloads/soal-shift-sisop-modul-1-I05-2021/soal2/hasil.txt```. Just to remember, ```"<"``` for the initial one and ```"<<"``` for update it.
 
-3 a.) 
-Question Analysis:
+# Question 3
+***a)*** 
+***Question Analysis:***
 First, we are asked to download some images from https://loremflickr.com/320/240/kitten for about 23 times. After that we are asked to save the log file into Foto.log and rename the downloaded files into Koleksi_XX. There is a special rule where we must delete any duplicate image. Also the Koleksi_XX must be in order.
 
-Solution:
+***Solution:***
 Because we need to download the images for about 23 times, we will use loops (for this case we will use for-loop). For the special rule, we will use a helpful tool called fdupes where it will remove duplicates found on point. We use the syntax -dN to get a more automatic deletion of the duplicate images. After that we know that we will use wget to download from url, but we must also save both the log files and rename the downloaded files. We can use -a to save the log files into Foto.log and -O to rename the files into Koleksi_XX
 
-Source Code:
+***Code:***
 ```
 for ((counter=1; counter<=23; counter=counter+1))
 do
@@ -148,18 +149,19 @@ do
 done
 ```
 
-b.) 
-Question Analysis:
+***b)*** 
+***Question Analysis:***
 Here, we are asked to make a schedule to download the images in a specific time  The script must be run at 8 pm every month with 2 special condition which is the first day of every seven days and the second days every four days. Also the downloaded images must be moved into a folder with the format of the download date (DD-MM-YY)
 
-Solution: 
+***Solution:***
 We can use crontab to make a schedule to run a command on appointed date. First, we make a script which is soal3b.sh where in the script we will run the soal3a.sh script, then make a folder with the format DD-MM-YYYY. We then need to move the result from the first script into the newly created folder using mv for both the images and the log.
-```
+
 crontab guru
 0 20 1-31/7,2-31/4 * *
 At 20:00 on every 7th day-of-month from 1 through 31 and every 4th day-of-month from 2 through 31
 
-Source Code:
+***Source Code:***
+```
 (cron3b.tab)
 0 20 1-31/7,2-31/4 * * bash ./home/alvancho/soal3b.sh
 
@@ -170,7 +172,7 @@ mkdir /home/alvancho/$(date +%d-%m-%Y)
 mv Koleksi_* /home/alvancho/$(date +%d-%m-%Y)
 mv Foto.log /home/alvancho/$(date +%d-%m-%Y)
 ```
-c.) From what we understand, we need to download both rabbit and cat images alternatively then the folders are named with Kucing_ or Rabbit_
+c) From what we understand, we need to download both rabbit and cat images alternatively then the folders are named with Kucing_ or Rabbit_
 We want to try using the same logic on 3a but hasn't been successful yet.
 
 *We manage to find how to do both 3d and 3e but hasn't been succesful on 3c yet.
