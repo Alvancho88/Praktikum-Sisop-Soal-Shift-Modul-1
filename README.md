@@ -166,14 +166,14 @@ nano hasil.txt
 Before we started. We make the ```hasil.txt``` first by ```nano hasil.txt```. After that we make another by doing ```nano soal2_generate_laporan_ihir_shisop.sh```. Then we do the code overthere and to showing the result to ```hasil.txt```. We write their directory just like did before. ```/home/rafihayla/Downloads/Laporan-TokoShiSop.tsv >> /home/rafihayla/Downloads/soal-shift-sisop-modul-1-I05-2021/soal2/hasil.txt```. Just to remember, ```"<"``` for the initial one and ```"<<"``` for update it.
 
 # Question 3
-***a)*** 
-***Question Analysis:***
+**a)** 
+**Question Analysis**
 First, we are asked to download some images from https://loremflickr.com/320/240/kitten for about 23 times. After that we are asked to save the log file into Foto.log and rename the downloaded files into Koleksi_XX. There is a special rule where we must delete any duplicate image. Also the Koleksi_XX must be in order.
 
-***Solution:***
+**Solution**
 Because we need to download the images for about 23 times, we will use loops (for this case we will use for-loop). For the special rule, we will use a helpful tool called fdupes where it will remove duplicates found on point. We use the syntax -dN to get a more automatic deletion of the duplicate images. After that we know that we will use wget to download from url, but we must also save both the log files and rename the downloaded files. We can use -a to save the log files into Foto.log and -O to rename the files into Koleksi_XX
 
-***Code:***
+**Code**
 ```
 for ((counter=1; counter<=23; counter=counter+1))
 do
@@ -182,18 +182,18 @@ do
 done
 ```
 
-***b)*** 
-***Question Analysis:***
+**b)** 
+**Question Analysis**
 Here, we are asked to make a schedule to download the images in a specific time  The script must be run at 8 pm every month with 2 special condition which is the first day of every seven days and the second days every four days. Also the downloaded images must be moved into a folder with the format of the download date (DD-MM-YY)
 
-***Solution:***
+**Solution**
 We can use crontab to make a schedule to run a command on appointed date. First, we make a script which is soal3b.sh where in the script we will run the soal3a.sh script, then make a folder with the format DD-MM-YYYY. We then need to move the result from the first script into the newly created folder using mv for both the images and the log.
 
 crontab guru
 0 20 1-31/7,2-31/4 * *
 At 20:00 on every 7th day-of-month from 1 through 31 and every 4th day-of-month from 2 through 31
 
-***Source Code:***
+**Source Code**
 ```
 (cron3b.tab)
 0 20 1-31/7,2-31/4 * * bash ./home/alvancho/soal3b.sh
