@@ -28,7 +28,7 @@ Profit Percentage = (Profit - Cost Price) 100
 Cost Price is obtained from the reduction of Sales with Profit. (Quantity ignored).
 
 Code:
-
+'''
 awk -F "\t" '
 BEGIN {profit_percentage = 0} {
 	if((($21 / ($18 - $21)) * 100) > profit_percentage)
@@ -41,7 +41,7 @@ END {
 	printf ("The last transaction with the largest %d with a percentage of %.2f%%.\n\n", transaction_id, profit_percentage)
 }
 ' /home/rafihayla/Downloads/Laporan-TokoShiSop.tsv > /home/rafihayla/Documents/soal-shift-sisop-modul-1-I05-2021/soal2/hasil.txt
-
+'''
 First of all we need to create the awk program. Awk is a scripting language used for manipulating data and generating reports.The awk command programming language requires no compiling, and allows the user to use variables, numeric functions, string functions, and logical operators. Then we write the -F "\t" to tell the program that the data that we used is separated by the column (tab). Next, we initialized the profit_percetage to 0 to let the if statement below can be executed. We jump in to the if statement. In this statement we put the formula that have been given before from the question. $21 means the profit column. $18 means the sales column. It is same as the formula to calculate the profit percentage from the data. We keep doing it until the largest profit percentage is more than 1, then we take the largest row. Afte that, We tell the program that we process the data or we get the data from the Laporan-TokoSisop.tsv and we put the result in the hasil.txt by wrinting their directory and using the ">" to transfer the result.
 
 2b) A list of customer names on the 2017 transaction in Albuquerque.
