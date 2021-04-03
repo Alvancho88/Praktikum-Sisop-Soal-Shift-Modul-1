@@ -30,7 +30,7 @@ cat syslog.log|cut -d ":" -f4|cut -d "(" -f1|grep ERROR|sort|uniq -c
 
 So in question number 1b we are asked to display all error messages that appear along with the number of occurrences.Number 1b is actually quite similar to the question in number 1a.But the difference is in number 1b, we are only told to display the ERROR and also the log massages.Our first step is to create cat. The function of this cat is to show all the information that we want to display.Syslog.log This is to print all the information / files that already exist.Then we use cut to take the info / information and cut it. Cut it from: first to: third. That's why we use -f4. So that later only ERROR log massages and age will appear or display.In number 1b, we use grep ERROR to only display the ERROR.cut -d "(" -f1 In the next cut we only cut / display information from the first argument to the sign (the first one.Here we also use sort to sort them alphabetically. Finally, we use uniq -c to display one of the data, which is actually a lot of data. So that the data is printed only once.So in the end, it will only bring up the ERROR and log massages and display how many ERRORs and log messages are displayed.
 
-**c)Ryujin must also be able to display the number of occurrences of the ERROR and INFO logs for each user.
+**c) Ryujin must also be able to display the number of occurrences of the ERROR and INFO logs for each user.
 After all the necessary information has been prepared, now is the time for Ryujin to write all the information into a report in the csv file format.**
 
 **Source Code**
@@ -44,7 +44,7 @@ cat syslog.log|grep INFO|cut -d "(" -f2|cut -d ")" -f1|sort|uniq -c
 
 In number 1c we are asked to display the usename info and the error.For errors, as usual we use cat syslog.log to display all available data. Then we cut it so that later it will only show the usernames.For errors, as usual we use cat syslog.log to display all available data. Then we cut it so that later it will only show the usernames.
 
-**d)All information obtained in point b is written into the error_message.csv file with the Error, Count header, which is then followed by a list of error messages and the number of occurrences is ordered based on the number of occurrence of error messages from the most.**
+**d) All information obtained in point b is written into the error_message.csv file with the Error, Count header, which is then followed by a list of error messages and the number of occurrences is ordered based on the number of occurrence of error messages from the most.**
 
 **Source Code**
 ```
@@ -62,7 +62,7 @@ done|sed '1 i\Error,Count' > error_message.csv
 
 For question number 1d, we are asked to calculate and generate the error message. So first we declare the error message variable. Then ":" -f4 is here to get rid of the date. "(" to remove the username. Then "" is to retrieve log messages only without the word error.Here we use while read to retrieve only the numbers and tables.After that we declare the new variable logmessage = `echo $ checkerror | cut -d" "-f2-` totalerror = `echo $ checkerror | cut -d" "-f1`. Checkerror to check the error message and Totalerror to calculate the number of errors. There we cut it again so that later only the message log appears.After that we print the variables that we have declared before. When finished, we use sed to input into a file. Error and Count to display the log message and calculate it. Then after that we just need to write to the file name error_message.csv
 
-**b)All information obtained in point c is written into the user_statistic.csv file with the header Username, INFO, ERROR sorted by username in ascending order.**
+**e) All information obtained in point c is written into the user_statistic.csv file with the header Username, INFO, ERROR sorted by username in ascending order.**
 
 **Source Code**
 ```
