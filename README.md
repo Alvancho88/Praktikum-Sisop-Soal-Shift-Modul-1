@@ -14,11 +14,11 @@ Repository for the solution to the module's question :coffee:
 
 **Source Code**
 ```
-cat syslog.log|cut -d ":" -f4
+cat syslog.log|cut -d " " -f1-|grep -o '[ERROR|INFO].*' 
 ```
 **Explanation**
 
-So in question number 1a we are asked to display INFO / ERROR, display log massages, and display username on each log line.Our first step is to create cat. The function of this cat is to show all the information that we want to display.Syslog.log This is to print all the information / files that already exist.Then we use cut to take the info / information and cut it. Cut it from: first to: third. That's why we use -f4. So that later only INFO / ERROR, log massages and age will appear or display.
+So in question number 1a we are asked to display INFO / ERROR, display log massages, and display username on each log line.Our first step is to create cat. The function of this cat is to show all the information that we want to display.Syslog.log This is to print all the information / files that already exist.Then we use cut to take the info / information and cut it. -f1 to read spaces from 0 to the last line. So that later only INFO / ERROR, log massages and age will appear or display.
 
 **b) Then, Ryujin must display all error messages that appear along with the number of occurrences.**
 
