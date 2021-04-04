@@ -247,6 +247,7 @@ Before we started. We make the ```hasil.txt``` first by ```nano hasil.txt```. Af
 **a) Make a script to download 23 images from "https://loremflickr.com/320/240/kitten" and save the logs to the file "Foto.log". Since the downloaded images are random, it is possible that the same image is downloaded more than once, therefore you have to delete the same image (no need to download new images to replace them). Then save the images with the name "Kumpulan_XX" with consecutive numbers without missing any number (example: Koleksi_01, Koleksi_02, ...)**
 
 **Source Code**
+
 ```
 #!/bin/bash
 
@@ -293,11 +294,18 @@ Because we need to download the images for about 23 times, we will use loops (fo
 
 ![3a_hasil_4](https://user-images.githubusercontent.com/61174498/113499980-ac8a6d80-9544-11eb-8ae0-4af19f737475.png)
 
+![wget](https://user-images.githubusercontent.com/61174498/113500572-39372a80-9549-11eb-8952-1f669e1fa6a3.png)
+
+![fdupes](https://user-images.githubusercontent.com/61174498/113500576-3d634800-9549-11eb-970d-23670e888495.png)
+
+![fdupes_-dN](https://user-images.githubusercontent.com/61174498/113500583-40f6cf00-9549-11eb-8cc9-11f0192d6cdf.png)
+
 **b)Because Kuuhaku is too lazy to run the script manually, he also asks you to run the script once a day at 8 o'clock in the evening for some specific dates every month, namely starting the 1st every seven days (1,8, ...), as well as from the 2nd once every four days (2,6, ...). To tidy it up, the downloaded images and logs are moved to a folder named the download date with the format "DD-MM-YYYY" (example: "13-03-2023").** 
 
 **Source Code**
 
 **soal3b.sh**
+
 ```
 #!/bin/bash
 
@@ -313,6 +321,7 @@ mv $dirloc/Koleksi_* "$dirloc/$download_date/"
 ```
 
 **cron3b.tab**
+
 ```
 0 20 1-31/7,2-31/4 * * bash /home/alvancho/Documents/IO5/Soal3/soal3b.sh
 ```
@@ -343,13 +352,87 @@ At 20:00 on every 7th day-of-month from 1 through 31 and every 4th day-of-month 
 
 **Source Code**
 
+**soal3c.sh**
+
+```
+#!/bin/bash
+
+root=/home/alvancho/Documents/IO5/Soal3
+
+current_date=$(date +"%d-%m-%Y")
+yesterday_date=$(date -d '-1 day' '+%d-%m-%Y')
+
+date_flag=$(date "+%d")
+let date_flag=$date_flag%2
+
+if [ -d "/home/alvancho/Documents/IO5/Soal3/Kelinci_$yesterday_date" ]
+then
+	download="kitten"
+        dirloc="Kucing_$current_date"
+	mkdir "$root"/"$dirloc" 
+	for ((i=1; i<=23; i=i+1))
+    	do
+            if [ $i -lt 10 ]
+                    then wget -a "$root"/"$dirloc"/Foto.log "https://loremflickr.com/320/240/kitten" -O "$root"/"$dirloc"/Koleksi_0"$i".jpg
+            else wget -a "$root"/"$dirloc"/Foto.log "https://loremflickr.com/320/240/kitten" -O "$root"/"$dirloc"/Koleksi_"$i".jpg
+            fi
+	done
+else 
+	download="bunny"
+        dirloc="Kelinci_$current_date"
+	mkdir "$root"/"$dirloc"
+	for ((i=1; i<=23; i=i+1))
+    	do
+            if [ $i -lt 10 ]
+                    then wget -a "$root"/"$dirloc"/Foto.log "https://loremflickr.com/320/240/bunny" -O "$root"/"$dirloc"/Koleksi_0"$i".jpg
+            else wget -a "$root"/"$dirloc"/Foto.log "https://loremflickr.com/320/240/bunny" -O "$root"/"$dirloc"/Koleksi_"$i".jpg      
+            fi
+	done
+fi
+
+fdupes -dN "$root"/"$dirloc"
+cd "$root"/"$dirloc"
+counter=1
+
+for f in Koleksi_*.jpg
+    do
+    if [ $counter -lt 10 ]
+        then 
+            mv -- "$f" "Koleksi_0$counter.jpg"
+    else 
+        mv -- "$f" "Koleksi_$counter.jpg"
+    fi
+let counter=$counter+1
+done
+```
+
 **Explanation**
 
 **Documentation**
 
+![3c_hasil_5](https://user-images.githubusercontent.com/61174498/113500410-f88ae180-9547-11eb-89e9-72c5d6f9a06e.png)
+
+![3c_hasil_1](https://user-images.githubusercontent.com/61174498/113500428-0e000b80-9548-11eb-9c94-bc4733a7a2a3.png)
+
+![3c_hasil_2](https://user-images.githubusercontent.com/61174498/113500430-135d5600-9548-11eb-9b25-0d495a5213d5.png)
+
+![3c_hasil_3](https://user-images.githubusercontent.com/61174498/113500434-17897380-9548-11eb-9570-0f3a2c4c3f94.png)
+
+![3c_hasil_4](https://user-images.githubusercontent.com/61174498/113500436-1c4e2780-9548-11eb-96b5-d97065e38902.png)
+
 **d.)To secure his Photo collection from Steven, Kuuhaku asked you to create a script that will move the entire folder to zip which is named "Koleksi.zip" and lock the zip with a password in the form of the current date with the format "MMDDYYYY" (example: "03032003").**
 
 **Source Code**
+
+**soal3d.sh**
+
+```
+#!/bin/bash
+
+cd /home/alvancho/Documents/IO5/Soal3
+download_date=$(date +"%m%d%Y")
+zip -rem -P "$download_date" Koleksi.zip Kelinci_* Kucing_*
+```
 
 **Explanation**
 -q = quiet
@@ -362,9 +445,44 @@ zip -q -P `date +"%m%d%Y"` -r -m Koleksi.zip ./Kucing* ./Kelinci*
 
 **Documentation**
 
+![zip](https://user-images.githubusercontent.com/61174498/113500557-21f83d00-9549-11eb-8de4-16b5515a1d3c.png)
+
+**Manual**
+
+![3d_manual](https://user-images.githubusercontent.com/61174498/113500466-5fa89600-9548-11eb-8de7-cf216c433065.png)
+
+![3d_manual_2](https://user-images.githubusercontent.com/61174498/113500468-63d4b380-9548-11eb-94b2-84960fa1b476.png)
+
+**Cronjob**
+
+![3d_hasil](https://user-images.githubusercontent.com/61174498/113500485-7a7b0a80-9548-11eb-8bc8-adb6d14bf0f7.png)
+
+![3d_zip_2](https://user-images.githubusercontent.com/61174498/113500491-8666cc80-9548-11eb-856a-2d4ff56294bb.png)
+
+![3d_password](https://user-images.githubusercontent.com/61174498/113500494-89fa5380-9548-11eb-95ff-76605673069f.png)
+
 **e.)Because kuuhaku only met Steven during college, which is every day except Saturday and Sunday, from 7 am to 6 pm, he asks you to zip the collection during college, apart from the time mentioned, he wants the collection unzipped. and no other zip files exist.**
 
 **Source Code**
+
+**soal3e.sh**
+
+```
+#!/bin/bash
+
+cd /home/alvancho/Documents/IO5/Soal3
+current_date=$(date +"%m%d%Y")
+unzip -P "$current_date" Koleksi.zip
+rm Koleksi.zip
+```
+
+**cron3e.tab**
+
+```
+0 7 * * 1-5 bash /home/alvancho/Documents/IO5/Soal3/soal3d.sh
+
+0 18 * * 1-5 bash /home/alvancho/Documents/IO5/Soal3/soal3e.sh
+```
 
 **Explanation**
 
@@ -380,3 +498,19 @@ At 07:00 on every day-of-week from Monday through Friday
 At 18:00 on every day-of-week from Monday through Friday
 
 **Documentation**
+
+![3d_crontab_guru](https://user-images.githubusercontent.com/61174498/113500366-916d2d00-9547-11eb-964e-604d734df6ea.png)
+
+![3e_crontab_guru](https://user-images.githubusercontent.com/61174498/113500372-97630e00-9547-11eb-8c62-3134bca4b707.png)
+
+![unzip](https://user-images.githubusercontent.com/61174498/113500546-10af3080-9549-11eb-9d2f-9d751cafa551.png)
+
+**Manual**
+
+![3e_manual](https://user-images.githubusercontent.com/61174498/113500522-d47bd000-9548-11eb-8380-6707d249974e.png)
+
+![3e_manual_2](https://user-images.githubusercontent.com/61174498/113500526-d9d91a80-9548-11eb-9d79-f42bc45702f1.png)![3e_hasil](https://user-images.githubusercontent.com/61174498/113500539-ff662400-9548-11eb-8d0a-23fca5db0fdf.png)
+
+**Cronjob*
+
+![Uploading 3e_hasil.png…]()
