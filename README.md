@@ -287,7 +287,7 @@ done
 First, we are asked to download some images from https://loremflickr.com/320/240/kitten for about 23 times. After that we are asked to save the log file into Foto.log and rename the downloaded files into Koleksi_XX. There is a special rule where we must delete any duplicate image. Also the Koleksi_XX must be in order.
 Because we need to download the images for about 23 times, we will use loops (for this case we will use for-loop). For the special rule, we will use a helpful tool called fdupes where it will remove duplicates found on point. We use the syntax -dN to get a more automatic deletion of the duplicate images. After that we know that we will use wget to download from url, but we must also save both the log files and rename the downloaded files. We can use -a to save the log files into Foto.log and -O to rename the files into Koleksi_XX
 
-**Documentaion**
+**Documentation**
 
 ![3a_hasil_5](https://user-images.githubusercontent.com/61174498/113499973-a5fbf600-9544-11eb-92e4-14b0346b3059.png)
 
@@ -327,12 +327,31 @@ At 20:00 on every 7th day-of-month from 1 through 31 and every 4th day-of-month 
 
 **Documentation**
 
+![3b_crontab_guru](https://user-images.githubusercontent.com/61174498/113500179-30912500-9546-11eb-97c9-1911fe0a3d3c.png)
 
+![3b_cron](https://user-images.githubusercontent.com/61174498/113500204-4acb0300-9546-11eb-8707-997c9fedfb95.png)
+
+![3b_proses_cron](https://user-images.githubusercontent.com/61174498/113500214-58808880-9546-11eb-982a-f832b939b6a9.png)
+
+![3b_hasil_cron](https://user-images.githubusercontent.com/61174498/113500230-6d5d1c00-9546-11eb-826f-d437b46e09ff.png)
+
+**note: when using cronjob, the command to make and move folder is not responding, howerver, when manually using ./soal3b.sh, it will create the folder and move the downloaded files into the folder**
+
+![3a_hasil_5](https://user-images.githubusercontent.com/61174498/113500243-9382bc00-9546-11eb-837c-16a4d2c69b37.png)
 
 **c.)To prevent Kuuhaku getting bored with pictures of kittens, he also asked you to download rabbit images from "https://loremflickr.com/320/240/bunny". Kuuhaku asks you to download pictures of cats and rabbits alternately (the first one is free. example: 30th cat > 31st rabbit > 1st cat > ...). To distinguish between folders containing cat pictures and rabbit pictures, the folder names are prefixed with "Kucing_" or "Kelinci_" (example: "Kucing_13-03-2023").**
 
+**Source Code**
+
+**Explanation**
+
+**Documentation**
+
 **d.)To secure his Photo collection from Steven, Kuuhaku asked you to create a script that will move the entire folder to zip which is named "Koleksi.zip" and lock the zip with a password in the form of the current date with the format "MMDDYYYY" (example: "03032003").**
 
+**Source Code**
+
+**Explanation**
 -q = quiet
 -P = Password
 -r = recurse-paths
@@ -341,7 +360,13 @@ At 20:00 on every 7th day-of-month from 1 through 31 and every 4th day-of-month 
 Source Code:
 zip -q -P `date +"%m%d%Y"` -r -m Koleksi.zip ./Kucing* ./Kelinci*
 
+**Documentation**
+
 **e.)Because kuuhaku only met Steven during college, which is every day except Saturday and Sunday, from 7 am to 6 pm, he asks you to zip the collection during college, apart from the time mentioned, he wants the collection unzipped. and no other zip files exist.**
+
+**Source Code**
+
+**Explanation**
 
 -q = quiet
 -P = Password
@@ -354,6 +379,4 @@ At 07:00 on every day-of-week from Monday through Friday
 0 18 * * 1-5
 At 18:00 on every day-of-week from Monday through Friday
 
-Source code:
-0 7 * * 1-5 zip -q -P `date +"%m%d%Y"` -r Koleksi.zip ./Kucing* ./Kelinci*
-0 18 * * 1-5 unzip -q -P `date +"%m%d%Y"` Koleksi.zip && rm Koleksi.zip
+**Documentation**
