@@ -285,8 +285,32 @@ done
 
 **Explanation**
 
-First, we are asked to download some images from https://loremflickr.com/320/240/kitten for about 23 times. After that we are asked to save the log file into Foto.log and rename the downloaded files into Koleksi_XX. There is a special rule where we must delete any duplicate image. Also the Koleksi_XX must be in order.
-Because we need to download the images for about 23 times, we will use loops (for this case we will use for-loop). For the special rule, we will use a helpful tool called fdupes where it will remove duplicates found on point. We use the syntax -dN to get a more automatic deletion of the duplicate images. After that we know that we will use wget to download from url, but we must also save both the log files and rename the downloaded files. We can use -a to save the log files into Foto.log and -O to rename the files into Koleksi_XX
+First, we need to check if maybe the previous Foto.log exist, then if it exist, we remove it. After that, we download all of the images using For loop and with the help of wget. The loop is set to 23(required number) and we use special commands for the wget itself, and those are -a to append-output of logfile into Foto.log and -O to rename the file into Koleksi_XX. We can make sure that the renaming is correst using if else statement, where if the number of download lower than 10, the files downloaded will be renamed to Koleksi_0*, and if more will be renamed to Kumpulan_XX. Next, we need to set the counter back to zero for rearrangement later and then change directory to the download location. We will then use a special built in function called fdupes to find duplicates and remove them. We also need to use special command -d for deletion of duplicate file and N following to keep at least 1 copy of duplicate file. After the downloaded files are filtered out of duplicates, we need to rearranged it base on remaining files. We will use loop  and mv command to rearrange the files with a special case for files numbered below 10. And that's it we have solve the first problem.
+
+wget man:
+-a logfile
+--append-output=logfile
+Append to logfile. This is the same as -o, only it appends to logfile instead of overwriting the old log file. If logfile does not exist, a new file is created.
+
+-O file
+--output-document=file
+The documents will not be written to the appropriate files, but all will be concatenated together and written to file. If - is used as file, documents will be printed to standard output, disabling link conversion. (Use ./- to print to a file literally named -.)
+Use of -O is not intended to mean simply "use the name file instead of the one in the URL ;" rather, it is analogous to shell redirection: wget -O file http://foo is intended to work like wget -O - http://foo > file; file will be truncated immediately, and all downloaded content will be written there.
+
+fdupes man:
+-d --delete      	prompt user for files to preserve and delete all
+                  	others; important: under particular circumstances,
+                  	data may be lost when using this option together
+                  	with -s or --symlinks, or when specifying a
+                  	particular directory more than once; refer to the
+                  	fdupes documentation for additional information
+-N --noprompt    	together with --delete, preserve the first file in
+                  	each set of duplicates and delete the rest without
+                  	prompting the user
+
+**Troubles**
+
+The problems will be the same most of the time. First, I am not accustomed to Linux, because I mainly use Windows where everything is more comfortable and doesn't require coding skills. Second, some of the command like wget are not explained in the module, which made us try to find the method to download for examples. Lastly, I'm not very familiar yet with awk, that's why I try to use fdupes, though I think fdupes really help make the code shorter and cleaner.
 
 **Documentation**
 
