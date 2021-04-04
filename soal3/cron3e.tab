@@ -1,1 +1,3 @@
+0 7 * * 1-5 bash /home/alvancho/Documents/IO5/Soal3/soal3d.sh
 
+0 18 * * 1-5 bash /home/alvancho/Documents/IO5/Soal3/soal3e.sh
