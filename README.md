@@ -76,7 +76,7 @@ For question number 1d, we are asked to calculate and generate the error message
 
 **Documentation**
 
-![Uploading 1617512894648.jpg…]()
+![1617512894648](https://user-images.githubusercontent.com/61174498/113499757-a09dac00-9542-11eb-9140-e87ddf44ff7c.jpg)
 
 **e) All information obtained in point c is written into the user_statistic.csv file with the header Username, INFO, ERROR sorted by username in ascending order.**
 
