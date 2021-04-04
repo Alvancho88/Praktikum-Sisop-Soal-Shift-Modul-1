@@ -513,4 +513,5 @@ At 18:00 on every day-of-week from Monday through Friday
 
 **Cronjob*
 
-![Uploading 3e_hasil.png…]()
+![3e_hasil](https://user-images.githubusercontent.com/61174498/113500611-7bf90280-9549-11eb-916a-2886d48798de.png)
+
