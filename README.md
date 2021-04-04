@@ -509,7 +509,7 @@ At 18:00 on every day-of-week from Monday through Friday
 
 ![3e_manual](https://user-images.githubusercontent.com/61174498/113500522-d47bd000-9548-11eb-8380-6707d249974e.png)
 
-![3e_manual_2](https://user-images.githubusercontent.com/61174498/113500526-d9d91a80-9548-11eb-9d79-f42bc45702f1.png)![3e_hasil](https://user-images.githubusercontent.com/61174498/113500539-ff662400-9548-11eb-8d0a-23fca5db0fdf.png)
+![3e_manual_2](https://user-images.githubusercontent.com/61174498/113500620-9a5efe00-9549-11eb-844f-d69d449fc95f.png)
 
 **Cronjob*
 
