@@ -242,13 +242,11 @@ Before we started. We make the ```hasil.txt``` first by ```nano hasil.txt```. Af
 
 # Question 3
 
-**0.) Kuuhaku is a person who really likes to collect digital photos, but Kuuhaku is also a lazy person so he doesn't want to bother looking for photos, besides that he is also shy, so he doesn't want anyone to see his collection, unfortunately, he has a friend named Steven who made being nosy his primary responsibility. Kuuhaku then had an idea, a way so that Steven won't be able to see his collection. To make his life easier, he is asking for your help. The idea is: **
+**0.) Kuuhaku is a person who really likes to collect digital photos, but Kuuhaku is also a lazy person so he doesn't want to bother looking for photos, besides that he is also shy, so he doesn't want anyone to see his collection, unfortunately, he has a friend named Steven who made being nosy his primary responsibility. Kuuhaku then had an idea, a way so that Steven won't be able to see his collection. To make his life easier, he is asking for your help. The idea is:**
 
 **a) Make a script to download 23 images from "https://loremflickr.com/320/240/kitten" and save the logs to the file "Foto.log". Since the downloaded images are random, it is possible that the same image is downloaded more than once, therefore you have to delete the same image (no need to download new images to replace them). Then save the images with the name "Kumpulan_XX" with consecutive numbers without missing any number (example: Koleksi_01, Koleksi_02, ...)**
 
 **Source Code**
-First, we are asked to download some images from https://loremflickr.com/320/240/kitten for about 23 times. After that we are asked to save the log file into Foto.log and rename the downloaded files into Koleksi_XX. There is a special rule where we must delete any duplicate image. Also the Koleksi_XX must be in order.
-
 ```
 #!/bin/bash
 
@@ -285,41 +283,55 @@ done
 ```
 
 **Explanation**
+
+First, we are asked to download some images from https://loremflickr.com/320/240/kitten for about 23 times. After that we are asked to save the log file into Foto.log and rename the downloaded files into Koleksi_XX. There is a special rule where we must delete any duplicate image. Also the Koleksi_XX must be in order.
 Because we need to download the images for about 23 times, we will use loops (for this case we will use for-loop). For the special rule, we will use a helpful tool called fdupes where it will remove duplicates found on point. We use the syntax -dN to get a more automatic deletion of the duplicate images. After that we know that we will use wget to download from url, but we must also save both the log files and rename the downloaded files. We can use -a to save the log files into Foto.log and -O to rename the files into Koleksi_XX
 
 **Documentaion**
 
+![3a_hasil_5](https://user-images.githubusercontent.com/61174498/113499973-a5fbf600-9544-11eb-92e4-14b0346b3059.png)
 
+![3a_hasil_4](https://user-images.githubusercontent.com/61174498/113499980-ac8a6d80-9544-11eb-8ae0-4af19f737475.png)
 
-**b)** 
-**Question Analysis**
+**b)Because Kuuhaku is too lazy to run the script manually, he also asks you to run the script once a day at 8 o'clock in the evening for some specific dates every month, namely starting the 1st every seven days (1,8, ...), as well as from the 2nd once every four days (2,6, ...). To tidy it up, the downloaded images and logs are moved to a folder named the download date with the format "DD-MM-YYYY" (example: "13-03-2023").** 
+
+**Source Code**
+
+**soal3b.sh**
+```
+#!/bin/bash
+
+dirloc=/home/alvancho/Documents/IO5/Soal3
+
+download_date=$(date +"%d-%m-%Y")
+mkdir "$download_date"
+
+bash $dirloc/soal3a.sh
+
+mv $dirloc/Foto.log "$dirloc/$download_date/"
+mv $dirloc/Koleksi_* "$dirloc/$download_date/"
+```
+
+**cron3b.tab**
+```
+0 20 1-31/7,2-31/4 * * bash /home/alvancho/Documents/IO5/Soal3/soal3b.sh
+```
+
+**Explanation**
 Here, we are asked to make a schedule to download the images in a specific time  The script must be run at 8 pm every month with 2 special condition which is the first day of every seven days and the second days every four days. Also the downloaded images must be moved into a folder with the format of the download date (DD-MM-YY)
-
-**Solution**
 We can use crontab to make a schedule to run a command on appointed date. First, we make a script which is soal3b.sh where in the script we will run the soal3a.sh script, then make a folder with the format DD-MM-YYYY. We then need to move the result from the first script into the newly created folder using mv for both the images and the log.
 
 crontab guru
 0 20 1-31/7,2-31/4 * *
 At 20:00 on every 7th day-of-month from 1 through 31 and every 4th day-of-month from 2 through 31
 
-**Source Code**
-```
-(cron3b.tab)
-0 20 1-31/7,2-31/4 * * bash ./home/alvancho/soal3b.sh
+**Documentation**
 
-(soal3b.sh)
-#!/bin/bash
-bash ./soal3a.sh
-mkdir /home/alvancho/$(date +%d-%m-%Y)
-mv Koleksi_* /home/alvancho/$(date +%d-%m-%Y)
-mv Foto.log /home/alvancho/$(date +%d-%m-%Y)
-```
-c) From what we understand, we need to download both rabbit and cat images alternatively then the folders are named with Kucing_ or Rabbit_
-We want to try using the same logic on 3a but hasn't been successful yet.
 
-*We manage to find how to do both 3d and 3e but hasn't been succesful on 3c yet.
 
-d.) We are asked to move entire folder to zip -> Koleksi.zip and lock the zip with a password with format of MMDDYYYY
+**c.)To prevent Kuuhaku getting bored with pictures of kittens, he also asked you to download rabbit images from "https://loremflickr.com/320/240/bunny". Kuuhaku asks you to download pictures of cats and rabbits alternately (the first one is free. example: 30th cat > 31st rabbit > 1st cat > ...). To distinguish between folders containing cat pictures and rabbit pictures, the folder names are prefixed with "Kucing_" or "Kelinci_" (example: "Kucing_13-03-2023").**
+
+**d.)To secure his Photo collection from Steven, Kuuhaku asked you to create a script that will move the entire folder to zip which is named "Koleksi.zip" and lock the zip with a password in the form of the current date with the format "MMDDYYYY" (example: "03032003").**
 
 -q = quiet
 -P = Password
@@ -329,7 +341,7 @@ d.) We are asked to move entire folder to zip -> Koleksi.zip and lock the zip wi
 Source Code:
 zip -q -P `date +"%m%d%Y"` -r -m Koleksi.zip ./Kucing* ./Kelinci*
 
-e.) When kuuhaku goes to college from 7am to 6pm he want us to zip the collection and when he's not in college we can unzip it
+**e.)Because kuuhaku only met Steven during college, which is every day except Saturday and Sunday, from 7 am to 6 pm, he asks you to zip the collection during college, apart from the time mentioned, he wants the collection unzipped. and no other zip files exist.**
 
 -q = quiet
 -P = Password
