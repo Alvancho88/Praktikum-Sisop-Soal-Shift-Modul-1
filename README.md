@@ -241,21 +241,55 @@ nano hasil.txt
 Before we started. We make the ```hasil.txt``` first by ```nano hasil.txt```. After that we make another by doing ```nano soal2_generate_laporan_ihir_shisop.sh```. Then we do the code overthere and to showing the result to ```hasil.txt```. We write their directory just like did before. ```/home/rafihayla/Downloads/Laporan-TokoShiSop.tsv >> /home/rafihayla/Downloads/soal-shift-sisop-modul-1-I05-2021/soal2/hasil.txt```. Just to remember, ```"<"``` for the initial one and ```"<<"``` for update it.
 
 # Question 3
-**a)** 
-**Question Analysis**
+
+**0.) Kuuhaku is a person who really likes to collect digital photos, but Kuuhaku is also a lazy person so he doesn't want to bother looking for photos, besides that he is also shy, so he doesn't want anyone to see his collection, unfortunately, he has a friend named Steven who made being nosy his primary responsibility. Kuuhaku then had an idea, a way so that Steven won't be able to see his collection. To make his life easier, he is asking for your help. The idea is: **
+
+**a) Make a script to download 23 images from "https://loremflickr.com/320/240/kitten" and save the logs to the file "Foto.log". Since the downloaded images are random, it is possible that the same image is downloaded more than once, therefore you have to delete the same image (no need to download new images to replace them). Then save the images with the name "Kumpulan_XX" with consecutive numbers without missing any number (example: Koleksi_01, Koleksi_02, ...)**
+
+**Source Code**
 First, we are asked to download some images from https://loremflickr.com/320/240/kitten for about 23 times. After that we are asked to save the log file into Foto.log and rename the downloaded files into Koleksi_XX. There is a special rule where we must delete any duplicate image. Also the Koleksi_XX must be in order.
 
-**Solution**
-Because we need to download the images for about 23 times, we will use loops (for this case we will use for-loop). For the special rule, we will use a helpful tool called fdupes where it will remove duplicates found on point. We use the syntax -dN to get a more automatic deletion of the duplicate images. After that we know that we will use wget to download from url, but we must also save both the log files and rename the downloaded files. We can use -a to save the log files into Foto.log and -O to rename the files into Koleksi_XX
-
-**Code**
 ```
+#!/bin/bash
+
+dirloc=/home/alvancho/Documents/IO5/Soal3
+
+if [ -f $dirloc/Foto.log ]
+then
+	rm $dirloc/Foto.log
+fi
+
 for ((counter=1; counter<=23; counter=counter+1))
-do
-	wget -a Foto.log -O Koleksi_$counter https://loremflickr.com/320/240/kitten
-	fdupes -dN /home/alvancho
+    do
+    if [ $counter -lt 10 ]
+        then wget -a "$dirloc"/Foto.log "https://loremflickr.com/320/240/kitten" -O "$dirloc"/Koleksi_0"$counter".jpg
+    else wget -a "$dirloc"/Foto.log "https://loremflickr.com/320/240/kitten" -O "$dirloc"/Koleksi_"$counter".jpg
+    fi
+done
+
+
+counter=1
+cd "$dirloc"
+fdupes -dN "$dirloc"
+
+for f in Koleksi_*.jpg
+    do
+    if [ $counter -lt 10 ]
+        then 
+            mv -- "$f" "Koleksi_0$counter.jpg"
+    else 
+        mv -- "$f" "Koleksi_$counter.jpg"
+    fi
+let counter=$counter+1
 done
 ```
+
+**Explanation**
+Because we need to download the images for about 23 times, we will use loops (for this case we will use for-loop). For the special rule, we will use a helpful tool called fdupes where it will remove duplicates found on point. We use the syntax -dN to get a more automatic deletion of the duplicate images. After that we know that we will use wget to download from url, but we must also save both the log files and rename the downloaded files. We can use -a to save the log files into Foto.log and -O to rename the files into Koleksi_XX
+
+**Documentaion**
+
+
 
 **b)** 
 **Question Analysis**
