@@ -285,7 +285,45 @@ done
 
 **Explanation**
 
-First, we need to check if maybe the previous Foto.log exist, then if it exist, we remove it. After that, we download all of the images using For loop and with the help of wget. The loop is set to 23(required number) and we use special commands for the wget itself, and those are -a to append-output of logfile into Foto.log and -O to rename the file into Koleksi_XX. We can make sure that the renaming is correst using if else statement, where if the number of download lower than 10, the files downloaded will be renamed to Koleksi_0*, and if more will be renamed to Kumpulan_XX. Next, we need to set the counter back to zero for rearrangement later and then change directory to the download location. We will then use a special built in function called fdupes to find duplicates and remove them. We also need to use special command -d for deletion of duplicate file and N following to keep at least 1 copy of duplicate file. After the downloaded files are filtered out of duplicates, we need to rearranged it base on remaining files. We will use loop  and mv command to rearrange the files with a special case for files numbered below 10. And that's it we have solve the first problem.
+First, we need to check if maybe the previous Foto.log exist, then if it exist, we remove it.
+```
+if [ -f $dirloc/Foto.log ]
+then
+	rm $dirloc/Foto.log
+fi
+```
+
+After that, we download all of the images using For loop and with the help of wget. The loop is set to 23(required number) and we use special commands for the wget itself, and those are -a to append-output of logfile into Foto.log and -O to rename the file into Koleksi_XX. We can make sure that the renaming is correst using if else statement, where if the number of download lower than 10, the files downloaded will be renamed to Koleksi_0*, and if more will be renamed to Kumpulan_XX. 
+```
+for ((counter=1; counter<=23; counter=counter+1))
+    do
+    if [ $counter -lt 10 ]
+        then wget -a "$dirloc"/Foto.log "https://loremflickr.com/320/240/kitten" -O "$dirloc"/Koleksi_0"$counter".jpg
+    else wget -a "$dirloc"/Foto.log "https://loremflickr.com/320/240/kitten" -O "$dirloc"/Koleksi_"$counter".jpg
+    fi
+done
+```
+
+Next, we need to set the counter back to zero for rearrangement later and then change directory to the download location. We will then use a special built in function called fdupes to find duplicates and remove them. We also need to use special command -d for deletion of duplicate file and N following to keep at least 1 copy of duplicate file.
+```
+counter=1
+cd "$dirloc"
+fdupes -dN "$dirloc"
+```
+
+After the downloaded files are filtered out of duplicates, we need to rearranged it base on remaining files. We will use loop  and mv command to rearrange the files with a special case for files numbered below 10. And that's it we have solve the first problem.
+```
+for f in Koleksi_*.jpg
+    do
+    if [ $counter -lt 10 ]
+        then 
+            mv -- "$f" "Koleksi_0$counter.jpg"
+    else 
+        mv -- "$f" "Koleksi_$counter.jpg"
+    fi
+let counter=$counter+1
+done
+```
 
 wget man:
 -a logfile
@@ -310,7 +348,10 @@ fdupes man:
 
 **Troubles**
 
-The problems will be the same most of the time. First, I am not accustomed to Linux, because I mainly use Windows where everything is more comfortable and doesn't require coding skills. Second, some of the command like wget are not explained in the module, which made us try to find the method to download for examples. Lastly, I'm not very familiar yet with awk, that's why I try to use fdupes, though I think fdupes really help make the code shorter and cleaner.
+The problems will be the same most of the time. 
+First, I am not accustomed to Linux, because I mainly use Windows where everything is more comfortable and doesn't require coding skills. 
+Second, some of the command like wget are not explained in the module, which made us try to find the method to download for examples. 
+Lastly, I'm not very familiar yet with awk, that's why I try to use fdupes, though I think fdupes really help make the code shorter and cleaner.
 
 **Documentation**
 
@@ -351,12 +392,39 @@ mv $dirloc/Koleksi_* "$dirloc/$download_date/"
 ```
 
 **Explanation**
-Here, we are asked to make a schedule to download the images in a specific time  The script must be run at 8 pm every month with 2 special condition which is the first day of every seven days and the second days every four days. Also the downloaded images must be moved into a folder with the format of the download date (DD-MM-YY)
-We can use crontab to make a schedule to run a command on appointed date. First, we make a script which is soal3b.sh where in the script we will run the soal3a.sh script, then make a folder with the format DD-MM-YYYY. We then need to move the result from the first script into the newly created folder using mv for both the images and the log.
 
-crontab guru
+Script:
+We need to set the folder path first, then create the folder with the name using format of download date (dd-mm-YYYY format). 
+```
+dirloc=/home/alvancho/Documents/IO5/Soal3
+
+download_date=$(date +"%d-%m-%Y")
+mkdir "$download_date"
+```
+
+After that we run the script of soal3a.sh
+```
+bash $dirloc/soal3a.sh
+```
+
+Then we move the results to the newly created folder/directory
+```
+mv $dirloc/Foto.log "$dirloc/$download_date/"
+mv $dirloc/Koleksi_* "$dirloc/$download_date/"
+```
+
+Cronjob:
+https://crontab.guru/ for testing the times
 0 20 1-31/7,2-31/4 * *
 At 20:00 on every 7th day-of-month from 1 through 31 and every 4th day-of-month from 2 through 31
+bash command for executing the scipt in a folder
+
+**Troubles**
+
+The problems will be the same most of the time. 
+First, I am not accustomed to Linux, because I mainly use Windows where everything is more comfortable and doesn't require coding skills. 
+Second, 1-31/7,2-31/4 type of example have never been told and the cronjob syntax is very prone to error with a bit of syntax mistake like adding . or no space between command.
+Lastly, testing for the cronjobs takes too much time, especially for beginner's problem. I had a problem with path which takes quite some time because of the testing time.
 
 **Documentation**
 
@@ -432,6 +500,70 @@ done
 
 **Explanation**
 
+The problem is actually quite similiar with 3a, but here we are asked to download Kitten and Bunny images in an interval of 1 day. 
+Also we are asked to move the output into a folder.
+First, we need to get the current date and the date yesterday for comparison.
+We can use '-1 day' to fullfill the case for yesterday date which is current date -1 day.
+```
+current_date=$(date +"%d-%m-%Y")
+yesterday_date=$(date -d '-1 day' '+%d-%m-%Y')
+```
+
+After that, we will check if the previous date we downloaded Kelinci or Kucing. If none exit we can start freely which in this case, we will start with Kelinci. 
+We will also make a directory with the format of Kucing_dd-mm-YYYY or Kelinci_dd-mm-YYYY.
+We can use if else to split the download and directory made according to the date rule. 
+We will use the same method for download which for 1-9 will use Koleksi_0* and 10+ will use Koleksi_XX.
+```
+if [ -d "/home/alvancho/Documents/IO5/Soal3/Kelinci_$yesterday_date" ]
+then
+	download="kitten"
+        dirloc="Kucing_$current_date"
+	mkdir "$root"/"$dirloc" 
+	for ((i=1; i<=23; i=i+1))
+    	do
+            if [ $i -lt 10 ]
+                    then wget -a "$root"/"$dirloc"/Foto.log "https://loremflickr.com/320/240/kitten" -O "$root"/"$dirloc"/Koleksi_0"$i".jpg
+            else wget -a "$root"/"$dirloc"/Foto.log "https://loremflickr.com/320/240/kitten" -O "$root"/"$dirloc"/Koleksi_"$i".jpg
+            fi
+	done
+else 
+	download="bunny"
+        dirloc="Kelinci_$current_date"
+	mkdir "$root"/"$dirloc"
+	for ((i=1; i<=23; i=i+1))
+    	do
+            if [ $i -lt 10 ]
+                    then wget -a "$root"/"$dirloc"/Foto.log "https://loremflickr.com/320/240/bunny" -O "$root"/"$dirloc"/Koleksi_0"$i".jpg
+            else wget -a "$root"/"$dirloc"/Foto.log "https://loremflickr.com/320/240/bunny" -O "$root"/"$dirloc"/Koleksi_"$i".jpg      
+            fi
+	done
+fi
+```
+
+The rest of the method is the same as in 3a where we use fdupes to remove duplicates and then use loop to rearrange the remaining files neatly.
+```
+fdupes -dN "$root"/"$dirloc"
+cd "$root"/"$dirloc"
+counter=1
+
+for f in Koleksi_*.jpg
+    do
+    if [ $counter -lt 10 ]
+        then 
+            mv -- "$f" "Koleksi_0$counter.jpg"
+    else 
+        mv -- "$f" "Koleksi_$counter.jpg"
+    fi
+let counter=$counter+1
+done
+```
+
+**Troubles**
+The problems will be the same most of the time. 
+First, I am not accustomed to Linux, because I mainly use Windows where everything is more comfortable and doesn't require coding skills. 
+Second, the interval trick can be challenging. I tried to use even and odd but realize that the method is not effective, then I found the solution by comparing date.
+Lastly, I'm not very familiar yet with awk, that's why I try to use fdupes, though I think fdupes really help make the code shorter and cleaner.
+
 **Documentation**
 
 ![3c_hasil_5](https://user-images.githubusercontent.com/61174498/113500410-f88ae180-9547-11eb-89e9-72c5d6f9a06e.png)
@@ -459,13 +591,21 @@ zip -rem -P "$download_date" Koleksi.zip Kelinci_* Kucing_*
 ```
 
 **Explanation**
--q = quiet
+
+Script:
+This problem is quite easy, where we just need to understand how zip work.
+First, we change directory to the target directory. This is very important to avoid cronjob failure.
+Next, we need to set the download date to the current date and use the command zip and other commands to make a good passworded zip.file.
+zip manual:
 -P = Password
 -r = recurse-paths
 -m = move
+-e = encrpyt
 
-Source Code:
-zip -q -P `date +"%m%d%Y"` -r -m Koleksi.zip ./Kucing* ./Kelinci*
+**Troubles**
+The problems will be the same most of the time. 
+First, I am not accustomed to Linux, because I mainly use Windows where everything is more comfortable and doesn't require coding skills. 
+Lastly, testing for the cronjobs takes too much time, especially for beginner's problem.
 
 **Documentation**
 
@@ -510,16 +650,25 @@ rm Koleksi.zip
 
 **Explanation**
 
--q = quiet
+Script:
+This problem is quite easy, where we just need to understand how zip work.
+First, we change directory to the target directory. This is very important to avoid cronjob failure.
+Next, we need to set the download date to the current date and use the command unzip and other commands to neatly unzip the files.
+Lastly, we must not forget to remove the zip.file after unzipping.
+Unzip Manual:
 -P = Password
--r = recurse-paths
--m = move
 
-crontab guru
+Cronjob:
+https://crontab.guru/
 0 7 * * 1-5
 At 07:00 on every day-of-week from Monday through Friday
 0 18 * * 1-5
 At 18:00 on every day-of-week from Monday through Friday
+
+**Troubles**
+The problems will be the same most of the time. 
+First, I am not accustomed to Linux, because I mainly use Windows where everything is more comfortable and doesn't require coding skills. 
+Lastly, testing for the cronjobs takes too much time, especially for beginner's problem.
 
 **Documentation**
 
@@ -538,4 +687,3 @@ At 18:00 on every day-of-week from Monday through Friday
 **Cronjob*
 
 ![3e_hasil](https://user-images.githubusercontent.com/61174498/113500611-7bf90280-9549-11eb-916a-2886d48798de.png)
-
