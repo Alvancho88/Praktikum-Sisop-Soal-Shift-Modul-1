@@ -12,8 +12,9 @@
 # Cost Price = Sales - Profit
 
 awk -F "\t" '
-BEGIN {profit_percentage = 0} {
-	if((($21 / ($18 - $21)) * 100) > profit_percentage)
+BEGIN {{profit_percentage = 0}}
+{
+	if((($21 / ($18 - $21)) * 100) >= profit_percentage)
 	{
 		profit_percentage = (($21 / ($18 - $21) ) * 100);
 		transaction_id = $1
@@ -22,7 +23,7 @@ BEGIN {profit_percentage = 0} {
 END {
 	printf ("The last transaction with the largest %d with a percentage of %.2f%%.\n\n", transaction_id, profit_percentage)
 }
-' /home/rafihayla/Downloads/Laporan-TokoShiSop.tsv > /home/rafihayla/Documents/soal-shift-sisop-modul-1-I05-2021/soal2/hasil.txt
+' /home/rafihayla/Downloads/Laporan-TokoShiSop.tsv > /home/rafihayla/Downloads/soal-shift-sisop-modul-1-I05-2021/soal2/hasil.txt
 
 
 # Question B
@@ -32,10 +33,9 @@ END {
 
 awk -F "\t" '
 $2~/2017/ && $10~/Albuquerque/ {row[$7]++}
-BEGIN {
-	printf("The list of customer name in Albuquerque in 2017 includes:\n")
-}
+
 END {
+	printf("The list of customer name in Albuquerque in 2017 includes:\n")
         for(customer_name in row)
         {
                 printf("%s\n", customer_name)
@@ -43,7 +43,7 @@ END {
 
         printf("\n")
 }
-' /home/rafihayla/Downloads/Laporan-TokoShiSop.tsv >> /home/rafihayla/Documents/soal-shift-sisop-modul-1-I05-2021/soal2/hasil.txt
+' /home/rafihayla/Downloads/Laporan-TokoShiSop.tsv >> /home/rafihayla/Downloads/soal-shift-sisop-modul-1-I05-2021/soal2/hasil.txt
 
 
 # Question C
@@ -72,7 +72,7 @@ END {
 
 	printf("The type of customer segment with the least sales is %s with %d transaction.\n\n",segment,transactions)
 }
-' /home/rafihayla/Downloads/Laporan-TokoShiSop.tsv >> /home/rafihayla/Documents/soal-shift-sisop-modul-1-I05-2021/soal2/hasil.txt 
+' /home/rafihayla/Downloads/Laporan-TokoShiSop.tsv >> /home/rafihayla/Downloads/soal-shift-sisop-modul-1-I05-2021/soal2/hasil.txt
 
 # Question D
 # TokoShiSop divides the sales region into four parts:
@@ -103,4 +103,4 @@ END {
 
 	printf("The region which has the least total profit is %s with total profit %d\n",region,total_profit)
 }
-' /home/rafihayla/Downloads/Laporan-TokoShiSop.tsv >> /home/rafihayla/Documents/soal-shift-sisop-modul-1-I05-2021/soal2/hasil.txt 
+' /home/rafihayla/Downloads/Laporan-TokoShiSop.tsv >> /home/rafihayla/Downloads/soal-shift-sisop-modul-1-I05-2021/soal2/hasil.txt
